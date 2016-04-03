@@ -1,0 +1,11 @@
+AddDefaultCharset UTF-8
+DirectoryIndex web/index.php
+
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+    Options -Indexes
+    RewriteEngine   on
+    RewriteCond     %{SCRIPT_FILENAME}  !-f
+    RewriteCond $1 !^(index\.php|robots\.txt|img|css|js)
+    RewriteRule     ^(.+) web/index.php [L]
+</IfModule>
