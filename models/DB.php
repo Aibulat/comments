@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-// èñïîëüçóåì PDO äëÿ ðàáîòû ñ ÁÄ
+// Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÐ¼ PDO Ð´Ð»Ñ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ñ Ð‘Ð”
 use PDO;
 use PDOException;
 
@@ -14,21 +14,21 @@ abstract class DB
 
     public function __construct()
     {
-        // èñïîëüçóåì áëîê try/catch äëÿ îòëîâà èñêëþ÷åíèé
+        // Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÐ¼ Ð±Ð»Ð¾Ðº try/catch Ð´Ð»Ñ Ð¾Ñ‚Ð»Ð¾Ð²Ð° Ð¸ÑÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ð¹
         try {
-            //çàãðóæàåì äàííûå äëÿ ïîäêëþ÷åíèÿ ê ÁÄ
+            //Ð·Ð°Ð³Ñ€ÑƒÐ¶Ð°ÐµÐ¼ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð´Ð»Ñ Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ðº Ð‘Ð”
             $config = require_once __DIR__ . '/../config/db.php';
 
             $this->dbh = new PDO($config['dsn'], $config['username'], $config['password']);
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            // ñîõðàíÿåì îøèáêè â ôàéëå
+            // ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÐµÐ¼ Ð¾ÑˆÐ¸Ð±ÐºÐ¸ Ð² Ñ„Ð°Ð¹Ð»Ðµ
             file_put_contents(__DIR__ . '/../log/DbErrors.txt', $e->getMessage() . PHP_EOL, FILE_APPEND);
             die($e->getMessage());
         }
     }
 
-    // ìåòîä âîçâðàùàåò âñå äàííûå òàáëèöû â âèäå àññîöèàòèâíîãî ìàññèâà
+    // Ð¼ÐµÑ‚Ð¾Ð´ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð²ÑÐµ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ Ð² Ð²Ð¸Ð´Ðµ Ð°ÑÑÐ¾Ñ†Ð¸Ð°Ñ‚Ð¸Ð²Ð½Ð¾Ð³Ð¾ Ð¼Ð°ÑÑÐ¸Ð²Ð°
     public function findAll()
     {
         return $this->dbh->query('SELECT * FROM ' . $this->tableName())->fetchAll(PDO::FETCH_ASSOC);

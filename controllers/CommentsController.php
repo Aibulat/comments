@@ -11,7 +11,7 @@ use app\models\Toolkit;
 
 class CommentsController
 {
-    // ñòàðòîâûé ìåòîä, â çàâèñèìîñòè îò òèïà çàïðîñà è ïåðåäàííûõ ïàðàìåòðîâ, âûïîëíÿåì ñîîòâåòñòâóþùåå äåéñòâèå
+    // ÑÑ‚Ð°Ñ€Ñ‚Ð¾Ð²Ñ‹Ð¹ Ð¼ÐµÑ‚Ð¾Ð´, Ð² Ð·Ð°Ð²Ð¸ÑÐ¸Ð¼Ð¾ÑÑ‚Ð¸ Ð¾Ñ‚ Ñ‚Ð¸Ð¿Ð° Ð·Ð°Ð¿Ñ€Ð¾ÑÐ° Ð¸ Ð¿ÐµÑ€ÐµÐ´Ð°Ð½Ð½Ñ‹Ñ… Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð², Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÑÐµÐ¼ ÑÐ¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÑ‚Ð²ÑƒÑŽÑ‰ÐµÐµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ
     public function run()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -26,16 +26,16 @@ class CommentsController
 
     }
 
-    // "Ãëàâíàÿ"
+    // "Ð“Ð»Ð°Ð²Ð½Ð°Ñ"
     private function actionIndex()
     {
         $comments = new Comments();
         $commentsData = $comments->findAll();
         $commentsCount = count($commentsData);
-        // ïðåîáðàçóåì äàííûå èç áä, ïðåîáðàçóåì â äðåâî è çàïîëíÿåì øàáëîí äàííûìè.
+        // Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·ÑƒÐµÐ¼ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð¸Ð· Ð±Ð´, Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·ÑƒÐµÐ¼ Ð² Ð´Ñ€ÐµÐ²Ð¾ Ð¸ Ð·Ð°Ð¿Ð¾Ð»Ð½ÑÐµÐ¼ ÑˆÐ°Ð±Ð»Ð¾Ð½ Ð´Ð°Ð½Ð½Ñ‹Ð¼Ð¸.
         $commentsTree = Toolkit::getTree(Toolkit::getArrayChangedKeys($commentsData));
         $commentsList = Toolkit::getTemplate($commentsTree, 'comment');
-        // view - èìÿ ïðåäñòàâëåíèÿ
+        // view - Ð¸Ð¼Ñ Ð¿Ñ€ÐµÐ´ÑÑ‚Ð°Ð²Ð»ÐµÐ½Ð¸Ñ
         return [
             'view' => 'index',
             'comments' => [
@@ -45,10 +45,10 @@ class CommentsController
         ];
     }
 
-    // äîáàâëåíèå çàïèñè â áä
+    // Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ð² Ð±Ð´
     private function actionAdd()
     {
-        // ôîðìàòèðóåì ïîëüçîâàòåëüñêèå äàííûå
+        // Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ð¸Ñ€ÑƒÐµÐ¼ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒÑÐºÐ¸Ðµ Ð´Ð°Ð½Ð½Ñ‹Ðµ
         $parentId = isset($_POST['parentID']) ? (int)$_POST['parentID'] : null;
         $userName = isset($_POST['userName']) ? Toolkit::formatString($_POST['userName']) : null;
         $userMessage = isset($_POST['userMessage']) ? Toolkit::formatString($_POST['userMessage']) : null;
@@ -56,7 +56,7 @@ class CommentsController
         if (isset($parentId, $userName, $userMessage)
             && (!empty($parentId) || $parentId === 0) && !empty($userName) && !empty($userMessage)) {
             $comments = new Comments();
-            // åñëè äîáàâëÿåìàÿ çàïèñü èìååò ðîäèòåëÿ, ïðîâåðÿåì óðîâåíü âëîæåííîñòè
+            // ÐµÑÐ»Ð¸ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼Ð°Ñ Ð·Ð°Ð¿Ð¸ÑÑŒ Ð¸Ð¼ÐµÐµÑ‚ Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ, Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ ÑƒÑ€Ð¾Ð²ÐµÐ½ÑŒ Ð²Ð»Ð¾Ð¶ÐµÐ½Ð½Ð¾ÑÑ‚Ð¸
             if ($parentId !== 0)
             {
                 $commentsData = $comments->findAll();
@@ -72,22 +72,22 @@ class CommentsController
         header('Location: /');
     }
 
-    // óäàëÿåì çàïèñü
+    // ÑƒÐ´Ð°Ð»ÑÐµÐ¼ Ð·Ð°Ð¿Ð¸ÑÑŒ
     private function actionDelete()
     {
-        // ôîðìàòèðóåì ïîëüçîâàòåëüñêèå äàííûå
+        // Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ð¸Ñ€ÑƒÐµÐ¼ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒÑÐºÐ¸Ðµ Ð´Ð°Ð½Ð½Ñ‹Ðµ
         $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
         if (isset($id) && $id > 0)
         {
             $comments = new Comments();
             $toolkit = new Toolkit();
             $commentsData = $comments->findAll();
-            // ïîëó÷àåì ïîòîìêîâ óäàëÿåìîé çàïèñè
+            // Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ Ð¿Ð¾Ñ‚Ð¾Ð¼ÐºÐ¾Ð² ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð¹ Ð·Ð°Ð¿Ð¸ÑÐ¸
             $toolkit->setChild($commentsData, $id);
             $child = $toolkit->child;
-            // óäàëÿåìóþ çàïèñü äîáàâëÿåì â ìàññèâ ïîòîìêîâ äëÿ óäàëåíèÿ
+            // ÑƒÐ´Ð°Ð»ÑÐµÐ¼ÑƒÑŽ Ð·Ð°Ð¿Ð¸ÑÑŒ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÐ¼ Ð² Ð¼Ð°ÑÑÐ¸Ð² Ð¿Ð¾Ñ‚Ð¾Ð¼ÐºÐ¾Ð² Ð´Ð»Ñ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ
             $child[] = $id;
-            // óäàëÿåì âñåõ ïîòîìêîâ è ñàìó çàïèñü
+            // ÑƒÐ´Ð°Ð»ÑÐµÐ¼ Ð²ÑÐµÑ… Ð¿Ð¾Ñ‚Ð¾Ð¼ÐºÐ¾Ð² Ð¸ ÑÐ°Ð¼Ñƒ Ð·Ð°Ð¿Ð¸ÑÑŒ
             $comments->deleteComments($child);
         }
         header('Location: /');

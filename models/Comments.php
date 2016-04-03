@@ -6,7 +6,7 @@ require_once __DIR__ . '/DB.php';
 
 class Comments extends DB
 {
-    // Максимальный уровень вложенности
+    // РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СѓСЂРѕРІРµРЅСЊ РІР»РѕР¶РµРЅРЅРѕСЃС‚Рё
     const MAX_LEVEL = 5;
 
     public function tableName()
